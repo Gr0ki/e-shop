@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 
     # apps:
     'src.home',
+    'src.store',
     'src.accounts',
     
 ]
