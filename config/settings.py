@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'widget_tweaks',
 
     # apps:
-    'src.home',
     'src.store',
     'src.accounts',
     
