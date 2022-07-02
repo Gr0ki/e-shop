@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+<title>Account</title>
+{% endblock head %}
+
+
+{% block content %}
+
+<div class='position-absolute top-50 start-50 translate-middle'>
+
+    <h4 class="text-center mb-3">Welcome, {{ user.username }}!</h4>
+    <div class="d-grid mx-auto">
+        {% if user.is_staff %}
+            <a href="/admin/auth/user/" class="btn btn btn-primary mb-2">Admin Panel</a>
+        {% endif %}
+        <a href="{% url 'change_password' %}" class="btn btn-outline-primary">Change Password</a>
+    </div>
+
+</div>
+
+{% endblock content %}

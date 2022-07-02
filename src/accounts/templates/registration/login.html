@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block head %}
+<title>Login</title>
+
+<!-- reCAPTCHA API -->
+<script src='https://www.google.com/recaptcha/api.js?render={{recaptcha_site_key}}'></script>
+
+{% endblock head %}
+
+{% block navbar-text %}
+{% endblock %}
+
+{% block content %}
+
+<script>
+    //global grecaptcha
+    grecaptcha.ready(function() {
+        grecaptcha.execute('{{recaptcha_site_key}}', {action: "login"}).then(function(token) {
+            document.getElementById('g-recaptcha-response').value = token;
+        });
+    });
+</script>
+
+
+<div class='position-absolute top-50 start-50 translate-middle'>
+    <h4 class="text-center">Sign in:</h4>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        
+        <div class="input-group flex-nowrap mb-2">
+            {% render_field form.username class="form-control" placeholder="Username" %}
+        </div>
+        <div class="input-group flex-nowrap mb-2">
+            {% render_field form.password class="form-control" placeholder="Password" %}
+        </div>
+
+        <div id="messages" class="mt-3">
+            {% for message in messages %}
+                <p id="messages" class="text-center link-danger">{{ message }}</p>
+            {% endfor %}
+        </div>
+        
+        <!-- reCAPTCHA input -->
+        <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+
+        <div class='d-flex justify-content-between'>
+            <a href="{% url 'register' %}" class="btn btn-outline-primary">Register</a>
+            <button type="submit" class="btn btn-primary">Enter</button>
+        </div>
+        
+    </form>
+</div>
+
+{% endblock content %}

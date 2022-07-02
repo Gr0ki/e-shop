@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+
+{% block head %}
+<title>Create new account</title>
+
+<!-- reCAPTCHA API -->
+<script src='https://www.google.com/recaptcha/api.js?render={{recaptcha_site_key}}'></script>
+
+{% endblock head %}
+
+
+{% block content %}
+
+<script>
+    //global grecaptcha
+    grecaptcha.ready(function() {
+        grecaptcha.execute('{{recaptcha_site_key}}', {action: "register"}).then(function(token) {
+            document.getElementById('g-recaptcha-response').value = token;
+        });
+    });
+</script>
+
+
+<div class='position-absolute top-50 start-50 translate-middle'>
+    <h4 class="text-center">Create a new user:</h4>
+    <p></p>
+    <form method="POST" action="" novalidate>
+        {% csrf_token %}
+
+        <div>
+            <h5>Username:</h5>
+            {% if form.username.help_text %}
+                <small class="form-text text-muted">{{ form.username.help_text }}</small>
+            {% endif %}
+        </div>
+        {% if form.is_bound %}
+            {% if form.username.errors %}
+                {% render_field form.username class="form-control is-invalid mb-3" placeholder="Username" %}
+                {% for error in form.username.errors %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% else %}
+                {% render_field form.username class="form-control is-valid mb-3" placeholder="Username" %}
+            {% endif %}
+        {% else %}
+            {% render_field form.username class="form-control mb-3" placeholder="Username" %}
+        {% endif %}
+
+
+        <div>
+            <h5>Password:</h5>
+            {% if form.password1.help_text %}
+                <small class="form-text text-muted">{{ form.password1.help_text }}</small>
+            {% endif %}
+        </div>
+        {% if form.is_bound %}
+            {% if form.password1.errors %}
+                {% render_field form.password1 class="form-control is-invalid mb-3" placeholder="Password" %}
+                {% for error in form.password1.errors %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% else %}
+                {% render_field form.password1 class="form-control is-valid mb-3" placeholder="Password" %}
+            {% endif %}
+        {% else %}
+            {% render_field form.password1 class="form-control mb-3" placeholder="Password" %}
+        {% endif %}
+
+
+        {% if form.is_bound %}
+            {% if form.password2.errors %}
+                {% render_field form.password2 class="form-control is-invalid mb-2" placeholder="Re-enter the password" %}
+                {% for error in form.password2.errors %}
+                    <div class=" invalid-feedback">
+                        <p>{{ error }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                {% render_field form.password2 class="form-control is-valid mb-2" placeholder="Re-enter the password" %}
+            {% endif %}
+        {% else %}
+            {% render_field form.password2 class="form-control mb-2" placeholder="Re-enter the password" %}
+        {% endif %}
+
+        <!-- reCAPTCHA input -->
+        <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+
+        <div class='d-flex justify-content-between'>
+            <a href="{% url 'login' %}" class="btn btn-outline-primary">Login page</a>
+            <button type="submit" class="btn btn-primary">Create User</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}
