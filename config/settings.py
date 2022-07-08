@@ -45,14 +45,23 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'django_filters',
     # customize forms in templates:
     'widget_tweaks',
 
     # apps:
     'src.store',
     'src.accounts',
-    
+
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+
+    ),
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -86,7 +95,8 @@ TEMPLATES = [
 
 # Authorization validation (default: "ModelBackend" - do not allow inactive users to login)
 # allow inactive users to login (to handle attempt to login of inactive user with a appropriate error)
-AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.AllowAllUsersModelBackend']
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.AllowAllUsersModelBackend']
 
 
 WSGI_APPLICATION = 'config.wsgi.application'
