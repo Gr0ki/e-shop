@@ -32,7 +32,7 @@ class ProductCreate(CreateAPIView):
     def create(self, request, *args, **kwargs):
         '''
         Validates "price" field for being float and greater than 0.0.
-        Returns inhereted create method from a parent class.
+        Returns inherited  create method from a parent class.
         '''
         try:
             price = request.data.get('price')
@@ -41,7 +41,7 @@ class ProductCreate(CreateAPIView):
         except:
             raise ValidationError(
                 {'price': 'A valid float number above 0.0 is required.'}
-                )
+            )
         if price > 0.0:
             raise ValidationError({'price': 'Must be above 0.0.'})
         else:
@@ -50,7 +50,7 @@ class ProductCreate(CreateAPIView):
 
 class ProductRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     '''
-    Retrives, updates and deletes a specific product.
+    Retrieves, updates and deletes a specific product.
     Updates the cache with each update or delete action.
     '''
     queryset = Product.objects.all()
