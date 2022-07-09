@@ -34,15 +34,11 @@ class ProductCreate(CreateAPIView):
         Validates "price" field for being float and greater than 0.0.
         Returns inherited  create method from a parent class.
         '''
-        try:
-            price = request.data.get('price')
-            if not isinstance(price, float):
-                raise ValidationError()
-        except:
+        price = request.data.get('price')
+        if not isinstance(price, float):
             raise ValidationError(
-                {'price': 'A valid float number above 0.0 is required.'}
-            )
-        if price > 0.0:
+                {'price': 'A valid float number above 0.0 is required.'})
+        if price <= 0.0:
             raise ValidationError({'price': 'Must be above 0.0.'})
         else:
             return super().create(request, *args, **kwargs)
