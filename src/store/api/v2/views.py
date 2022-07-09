@@ -1,4 +1,3 @@
-from math import prod
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.filters import SearchFilter
@@ -29,8 +28,7 @@ class ProductCreate(CreateAPIView):
     Creates new Product.
     '''
     serializer_class = ProductSerializer
-    
-    
+
     def create(self, request, *args, **kwargs):
         '''
         Validates "price" field for being float and greater than 0.0.
@@ -41,7 +39,9 @@ class ProductCreate(CreateAPIView):
             if not isinstance(price, float):
                 raise ValidationError()
         except:
-            raise ValidationError({'price': 'A valid float number above 0.0 is required.'})
+            raise ValidationError(
+                {'price': 'A valid float number above 0.0 is required.'}
+                )
         if price > 0.0:
             raise ValidationError({'price': 'Must be above 0.0.'})
         else:
@@ -77,7 +77,7 @@ class ProductRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
         if response.status_code == 200:
             product = response.data
             cache.set('product_data_{}'.format(product['id']),
-            {
+                      {
                 'name': product['name'],
                 'price': product['price'],
                 'category': product['category'],
