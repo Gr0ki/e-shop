@@ -5,5 +5,4 @@ __pycache__/
 
 
 secret.py
-requirements_dev.txt
 requests.http
