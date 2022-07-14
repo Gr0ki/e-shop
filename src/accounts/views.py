@@ -20,7 +20,7 @@ def register_request(request):
 
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
-        if form.is_valid():
+        if form.is_valid() is True:
             ''' reCAPTCHA validation '''
             recaptcha_response = request.POST.get('g-recaptcha-response')
             data = {
@@ -30,7 +30,7 @@ def register_request(request):
             r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
             result = r.json()
 
-            if result['success']:
+            if result['success'] is True:
                 ''' if reCAPTCHA returns True '''
                 form.save()
                 return redirect('login')
@@ -57,13 +57,13 @@ def login_request(request):
         r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
         result = r.json()
 
-        if result['success']:
+        if result['success'] is True:
             ''' if reCAPTCHA returns True '''
             username = request.POST.get('username')
             password = request.POST.get('password')
             user = authenticate(request, username=username, password=password)
             if user is not None:
-                if user.is_active:
+                if user.is_active is True:
                     login(request, user)
                     return redirect('account')
                 else:
@@ -81,13 +81,13 @@ def login_request(request):
 
 def logout_request(request):
     logout(request)
-    return redirect("welcome")
+    return redirect("main")
 
 @login_required
 def change_password_request(request):
     if request.method == 'POST':
         form = ChangePasswordForm(request.user, request.POST)
-        if form.is_valid():
+        if form.is_valid() is True:
             ''' reCAPTCHA validation '''
             recaptcha_response = request.POST.get('g-recaptcha-response')
             data = {
@@ -97,7 +97,7 @@ def change_password_request(request):
             r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
             result = r.json()
 
-            if result['success']:
+            if result['success'] is True:
                 ''' if reCAPTCHA returns True '''
                 user = form.save()
                 update_session_auth_hash(request, user)
