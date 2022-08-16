@@ -12,7 +12,7 @@ class Product(models.Model):
     name = models.CharField(max_length=200, unique=True)
     price = models.FloatField()
     # image = models.ImageField()
-    category = models.OneToOneField(
+    category = models.ForeignKey(
         Category, null=True, blank=True, on_delete=models.SET_NULL
     )
     description = models.TextField(null=True, blank=True)
