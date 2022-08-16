@@ -3,8 +3,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from src.products.api.v2.serializers import ProductSerializer
-from ...models import Product
+from ....products.models import Product
 
 
 class ProductCreateTestCase(APITestCase):

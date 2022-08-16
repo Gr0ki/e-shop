@@ -2,4 +2,4 @@ from django.views.generic import TemplateView
 
 
 class ProductsView(TemplateView):
-    template_name = "products/main.html"
+    template_name = "products/products.html"
