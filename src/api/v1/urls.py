@@ -1,11 +1,14 @@
 from django.urls import path
 
+from ..api_routes_lists_documentation.views import *
 from .views.products import *
 from .views.product_categories import *
 from .views.orders import *
 
 
 urlpatterns = [
+    # API routes:
+    path("", APIV1RoutesList.as_view(), name="api-v1-routes"),
     # Product Categories:
     path("categories", CategoryList.as_view(), name="categories-list"),
     path("categories/new", CategoryCreate.as_view(), name="add-new-category"),
