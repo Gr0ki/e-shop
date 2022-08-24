@@ -8,7 +8,7 @@ class Status(models.Model):
     name = models.CharField(max_length=30, unique=True)
 
     def __str__(self):
-        return f"Status: {self.name}"
+        return f"{self.name}"
 
 
 class Order(models.Model):
