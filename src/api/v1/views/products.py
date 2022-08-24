@@ -1,17 +1,15 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.exceptions import ValidationError
+from rest_framework.filters import SearchFilter
 from rest_framework.generics import (
-    ListAPIView,
     CreateAPIView,
+    ListAPIView,
     RetrieveUpdateDestroyAPIView,
 )
-from rest_framework.filters import SearchFilter
+from rest_framework.permissions import IsAdminUser
 
-from django_filters.rest_framework import DjangoFilterBackend
-
-from django.core.cache import cache
-
-from ....products.serializers import ProductSerializer
 from ....products.models import Product
+from ....products.serializers import ProductSerializer
 
 
 class ProductList(ListAPIView):
@@ -24,21 +22,23 @@ class ProductList(ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = (DjangoFilterBackend, SearchFilter)
-    filterset_fields = ("id", "is_in_stock")
+    filterset_fields = ("category", "is_in_stock")
     search_fields = ("name", "description")
 
 
 class ProductCreate(CreateAPIView):
     """
+    Endpoint for staff users only.
     Creates new Product.
     """
 
     serializer_class = ProductSerializer
+    permission_classes = [IsAdminUser]
 
     def create(self, request, *args, **kwargs):
         """
         Validates "price" field for being float and greater than 0.0.
-        Returns inherited  create method from a parent class.
+        Returns inherited create method from a parent class.
         """
         price = request.data.get("price")
         if not isinstance(price, float):
@@ -53,41 +53,34 @@ class ProductCreate(CreateAPIView):
 
 class ProductRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     """
+    Everyone has access to the GET method, while others are for staff users only.
     Retrieves, updates and deletes a specific product.
-    Updates the cache with each update or delete action.
     """
 
     queryset = Product.objects.all()
     lookup_field = "id"
     serializer_class = ProductSerializer
+    permission_classes = [IsAdminUser]
 
-    def delete(self, request, *args, **kwargs):
+    def check_permissions(self, request):
         """
-        Deletes cache data about the specific product.
-        Executes delete method from a parent class and returns a response on this action.
+        Check if the request should be permitted.
+        Raises an appropriate exception if the request is not permitted.
         """
-        product_id = request.data.get("id")
-        response = super().delete(request, *args, **kwargs)
-        if response.status_code == 204:
-            cache.delete("product_data_{}".format(product_id))
-        return response
+        if request.method != "GET":
+            super().check_permissions(request)
 
     def update(self, request, *args, **kwargs):
         """
-        Updates product.
-        Updates the cache.
+        Validates "price" field for being float and greater than 0.0.
+        Returns inherited update method from a parent class.
         """
-        response = super().update(request, *args, **kwargs)
-        if response.status_code == 200:
-            product = response.data
-            cache.set(
-                "product_data_{}".format(product["id"]),
-                {
-                    "name": product["name"],
-                    "price": product["price"],
-                    "category": product["category"],
-                    "description": product["description"],
-                    "is_in_stock": product["is_in_stock"],
-                },
+        price = request.data.get("price")
+        if not isinstance(price, float):
+            raise ValidationError(
+                {"price": "A valid float number above 0.0 is required."}
             )
-        return response
+        if price <= 0.0:
+            raise ValidationError({"price": "Must be above 0.0."})
+        else:
+            return super().update(request, *args, **kwargs)

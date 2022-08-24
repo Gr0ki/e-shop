@@ -1,67 +1,44 @@
+from rest_framework.filters import SearchFilter
 from rest_framework.generics import (
-    ListAPIView,
     CreateAPIView,
+    ListAPIView,
     RetrieveUpdateDestroyAPIView,
 )
+from rest_framework.permissions import IsAdminUser
 
-from django.core.cache import cache
-
-from ....products.serializers import CategorySerializer
 from ....products.models import Category
+from ....products.serializers import CategorySerializer
 
 
 class CategoryList(ListAPIView):
     """
     Returns a list of all categories.
-    Enabled filter result by "id"(?id=1) and "is_in_stock"(?is_in_stock=true) fields.
-    Enabled search by name and description for a partial match (?search=example).
+    Enabled search by name for a partial match (?search=example).
     """
 
     queryset = Category.objects.all()
+    filter_backends = (SearchFilter,)
+    search_fields = ("name",)
     serializer_class = CategorySerializer
 
 
 class CategoryCreate(CreateAPIView):
     """
+    Endpoint for staff users only.
     Creates new Category.
     """
 
     serializer_class = CategorySerializer
+    permission_classes = [IsAdminUser]
 
 
 class CategoryRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     """
+    Endpoint for staff users only.
     Retrieves, updates and deletes a specific category.
-    Updates the cache with each update or delete action.
     """
 
     queryset = Category.objects.all()
     lookup_field = "id"
     serializer_class = CategorySerializer
-
-    def delete(self, request, *args, **kwargs):
-        """
-        Deletes cache data about the specific category.
-        Executes delete method from a parent class and returns a response on this action.
-        """
-        category_id = request.data.get("id")
-        response = super().delete(request, *args, **kwargs)
-        if response.status_code == 204:
-            cache.delete("product_data_{}".format(category_id))
-        return response
-
-    def update(self, request, *args, **kwargs):
-        """
-        Updates category.
-        Updates the cache.
-        """
-        response = super().update(request, *args, **kwargs)
-        if response.status_code == 200:
-            category = response.data
-            cache.set(
-                "category_data_{}".format(category["id"]),
-                {
-                    "name": category["name"],
-                },
-            )
-        return response
+    permission_classes = [IsAdminUser]

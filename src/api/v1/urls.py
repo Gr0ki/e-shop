@@ -1,10 +1,11 @@
 from django.urls import path
 
 from ..api_routes_lists_documentation.views import *
-from .views.products import *
-from .views.product_categories import *
+from .views.oder_item import *
+from .views.order_status import *
 from .views.orders import *
-
+from .views.product_categories import *
+from .views.products import *
 
 urlpatterns = [
     # API routes:
@@ -23,16 +24,24 @@ urlpatterns = [
     path(
         "products/<int:id>", ProductRetrieveUpdateDestroy.as_view(), name="product-rud"
     ),
-    # Orders:
+    # Order Statuses:
+    path("order-statuses", StatusList.as_view(), name="status-list"),
+    path("order-statuses/new", StatusCreate.as_view(), name="add-new-status"),
+    path(
+        "order-statuses/<int:id>",
+        StatusRetrieveUpdateDestroy.as_view(),
+        name="status-rud",
+    ),
+    # # Orders:
     # path("orders", OrderList.as_view(), name="order-list"),
     # path("orders/new", OrderCreate.as_view(), name="add-new-order"),
     # path("orders/<int:id>", OrderRetrieveUpdateDestroy.as_view(), name="order-rud"),
-    # Order Statuses:
-    # path("order-statuses", StatusList.as_view(), name="status-list"),
-    # path("order-statuses/new", StatusCreate.as_view(), name="add-new-status"),
-    # path("order-statuses/<int:id>", StatusRetrieveUpdateDestroy.as_view(), name="status-rud"),
-    # Order Items:
+    # # Order Items:
     # path("order-item", OrderItemList.as_view(), name="order-item-list"),
     # path("order-item/new", OrderItemCreate.as_view(), name="add-new-order-item"),
-    # path("order-item/<int:id>", OrderItemRetrieveUpdateDestroy.as_view(), name="order-item-rud"),
+    # path(
+    #     "order-item/<int:id>",
+    #     OrderItemRetrieveUpdateDestroy.as_view(),
+    #     name="order-item-rud",
+    # ),
 ]
