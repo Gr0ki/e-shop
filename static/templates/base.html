@@ -12,30 +12,47 @@
         {% block head %}
         {% endblock head %}
 
-        <nav class="navbar navbar-dark bg-dark mb-5">
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+          <a class="navbar-brand" href="{% url 'products-list-page' %}">ABP shop</a>
+          <ul class="navbar-nav ms-auto">
+            {% if user.is_authenticated and user.is_staff %}
+              {% if request.path != '/account/' %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'api-versions-routes' %}">API</a>
+                </li>
+              {% endif %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+              </li>
+            {% elif user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+              </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">Login</a>
+            </li>
+            {% endif %}
+          </ul>
+        </nav>
+      
+
+        <!-- <nav class="navbar navbar-dark bg-dark mb-5">
             <a class="navbar-brand" href="{% url 'products-list-page' %}">ABP shop</a>
             {% block navbar-text %}
-            <div>
-                <ul class="navbar-nav mr-auto">
+              <ul class="navbar-nav ml-auto">
                   {% if user.is_authenticated %}
-                  
-                  <div class="container-fluid" id="navbarText">
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                      </li>
-                  </div>
-            
-                  {% else %}
-                  <div class="container-fluid" id="navbarText">
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'login' %}">Login</a>
+                      <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                     </li>
-                  </div>
-                  {% endif %}
-                </ul>
-            </div>
+                  {% else %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                  </li>
+                {% endif %}
+              </ul>
             {% endblock navbar-text %}
-        </nav>
+        </nav> -->
 
     </head>
 

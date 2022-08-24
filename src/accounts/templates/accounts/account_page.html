@@ -13,9 +13,11 @@
     <h4 class="text-center mb-3">Welcome, {{ user.username }}!</h4>
     <div class="d-grid mx-auto">
         {% if user.is_staff %}
-            <a href="/admin/auth/user/" class="btn btn btn-primary mb-2">Admin Panel</a>
+        <a href="/admin/auth/user/" class="btn btn btn-primary mb-2">Admin Panel</a>
+        <a href="/api/" class="btn btn btn-primary mb-2">API</a>
         {% endif %}
-        <a href="{% url 'change_password' %}" class="btn btn-outline-primary">Change Password</a>
+        <a href="{% url 'change_password' %}" class="btn btn-outline-primary">Change
+            Password</a>
     </div>
 
 </div>
