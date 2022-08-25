@@ -12,8 +12,10 @@ class Status(models.Model):
 
 
 class Order(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    status = models.ForeignKey(Status, on_delete=models.PROTECT)
+    customer = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    status = models.ForeignKey(
+        Status, default=None, null=True, on_delete=models.PROTECT
+    )  # TODO: Update default status
     date_time_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
