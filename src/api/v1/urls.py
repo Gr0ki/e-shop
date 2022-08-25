@@ -33,9 +33,9 @@ urlpatterns = [
         name="status-rud",
     ),
     # # Orders:
-    # path("orders", OrderList.as_view(), name="order-list"),
-    # path("orders/new", OrderCreate.as_view(), name="add-new-order"),
-    # path("orders/<int:id>", OrderRetrieveUpdateDestroy.as_view(), name="order-rud"),
+    path("orders", OrderList.as_view(), name="order-list"),
+    path("orders/new", OrderCreate.as_view(), name="add-new-order"),
+    path("orders/<int:id>", OrderRetrieveUpdateDestroy.as_view(), name="order-rud"),
     # # Order Items:
     # path("order-item", OrderItemList.as_view(), name="order-item-list"),
     # path("order-item/new", OrderItemCreate.as_view(), name="add-new-order-item"),

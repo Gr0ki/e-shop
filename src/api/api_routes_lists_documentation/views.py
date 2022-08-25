@@ -15,9 +15,9 @@ v1_data = {
     "Add new order status": "http://127.0.0.1:8000/api/v1/order-statuses/new",  # staff
     "Order status detailed": "http://127.0.0.1:8000/api/v1/order-statuses/1",  # staff
     # __________
-    # "Order list": "http://127.0.0.1:8000/api/v1/orders",  #
-    # "Add new order": "http://127.0.0.1:8000/api/v1/orders/new",  #
-    # "Order detailed": "http://127.0.0.1:8000/api/v1/orders/1",  #
+    "Order list": "http://127.0.0.1:8000/api/v1/orders",  #
+    "Add new order": "http://127.0.0.1:8000/api/v1/orders/new",  #
+    "Order detailed": "http://127.0.0.1:8000/api/v1/orders/1",  #
     # __________
     # "Order list": "http://127.0.0.1:8000/api/v1/orders",  #
     # "Add new order": "http://127.0.0.1:8000/api/v1/orders/new",  #
