@@ -1,10 +1,11 @@
-from django.core.cache import cache
+# from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
     RetrieveUpdateDestroyAPIView,
 )
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.exceptions import PermissionDenied
 
 from ....orders.models import OrderItem
 from ....orders.serializers import OrderItemSerializer
@@ -16,9 +17,18 @@ class OrderItemList(ListAPIView):
     Returns a list of all orders items.
     """
 
-    queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
-    permission_classes = [IsAdminUser]
+    queryset = OrderItem.objects.all()
+    permission_classes = [IsAuthenticated]
+    # filter_backends = [DjangoFilterBackend]
+    # filterset_fields = ("order",)
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff is False:
+            # TODO: return 403 error for access attempt for different user's order
+            self.queryset = self.queryset.filter(order__customer=user.id)
+        return super().get_queryset()
 
 
 class OrderItemCreate(CreateAPIView):
@@ -28,14 +38,21 @@ class OrderItemCreate(CreateAPIView):
     """
 
     serializer_class = OrderItemSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        user = self.request.user
+        if user.is_staff is False and request.data[
+            "order"
+        ] not in OrderItem.objects.filter(order__customer=user.id):
+            raise PermissionDenied()
+        return super().create(request, *args, **kwargs)
 
 
 class OrderItemRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     """
     Endpoint for staff users only.
     Retrieves, updates and deletes a specific status (for orders model).
-    Updates the cache with each update or delete action.
     """
 
     queryset = OrderItem.objects.all()
@@ -43,29 +60,16 @@ class OrderItemRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     serializer_class = OrderItemSerializer
     permission_classes = [IsAdminUser]
 
-    def delete(self, request, *args, **kwargs):
-        """
-        Deletes cache data about the specific status (for orders model).
-        Executes delete method from a parent class and returns a response on this action.
-        """
-        status_id = request.data.get("id")
-        response = super().delete(request, *args, **kwargs)
-        if response.status_code == 204:
-            cache.delete("status_data_{}".format(status_id))
-        return response
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff is False:
+            self.queryset = self.queryset.filter(order__customer=user.id)
+        return super().get_queryset()
 
-    def update(self, request, *args, **kwargs):
+    def check_permissions(self, request):
         """
-        Updates status (for orders model).
-        Updates the cache.
+        Check if the request should be permitted.
+        Raises an appropriate exception if the request is not permitted.
         """
-        response = super().update(request, *args, **kwargs)
-        if response.status_code == 200:
-            status = response.data
-            cache.set(
-                "status_data_{}".format(status["id"]),
-                {
-                    "name": status["name"],
-                },
-            )
-        return response
+        if request.method != "GET":
+            return super().check_permissions(request)

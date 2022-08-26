@@ -42,9 +42,12 @@ class ProductCreate(CreateAPIView):
         """
         price = request.data.get("price")
         if not isinstance(price, float):
-            raise ValidationError(
-                {"price": "A valid float number above 0.0 is required."}
-            )
+            try:
+                price = float(price)
+            except:
+                raise ValidationError(
+                    {"price": "A valid float number above 0.0 is required."}
+                )
         if price <= 0.0:
             raise ValidationError({"price": "Must be above 0.0."})
         else:
