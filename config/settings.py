@@ -10,14 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+from django.core.management.utils import get_random_secret_key
 from pathlib import Path
-from dotenv import load_dotenv
+
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -26,14 +25,12 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 # DEVELOPMENT:
 SECRET_KEY = os.environ.get("SECRET_KEY")
-# PRODUCTION:
-# SECRET_KEY = secret.DJANGO_PROD_SECRET_KEY
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.environ.get("DEBUG", default=0)))
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "*").split(" ")
 
 
 # Application definition
@@ -103,8 +100,12 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": os.environ.get("DB_ENGINE", "django.db.backends.sqlite3"),
+        "NAME": os.environ.get("DB_NAME", os.path.join(BASE_DIR, "db.sqlite3")),
+        "USER": os.environ.get("DB_USER", "user"),
+        "PASSWORD": os.environ.get("DB_PASSWORD", "password"),
+        "HOST": os.environ.get("DB_HOST", "localhost"),
+        "PORT": os.environ.get("DB_PORT", "5432"),
     }
 }
 
@@ -152,9 +153,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # DEVELOPMENT:
-GOOGLE_RECAPTCHA_SITE_KEY = "6LdUY0YgAAAAAExsOicJY4fPA3r8o0MibEcLaiNb"
-GOOGLE_RECAPTCHA_SECRET_KEY = "6LdUY0YgAAAAAC0MMmNfY3zwXVWF7V7MyE0oEME-"
-
-# PRODUCTION:
-# GOOGLE_RECAPTCHA_SITE_KEY = secret.GOOGLE_RECAPTCHA_SITE_KEY
-# GOOGLE_RECAPTCHA_SECRET_KEY = secret.GOOGLE_RECAPTCHA_SECRET_KEY
+GOOGLE_RECAPTCHA_SITE_KEY = os.environ.get("GOOGLE_RECAPTCHA_SITE_KEY")
+GOOGLE_RECAPTCHA_SECRET_KEY = os.environ.get("GOOGLE_RECAPTCHA_SECRET_KEY")
