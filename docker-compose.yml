@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    container_name: pgdb
+    environment:
+      # TODO: hide envs:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  django:
+    build: .
+    container_name: django
+    # environment:
+    # TODO: hide envs:  
+    # - DB_NAME=postgres
+    # - DB_USER=postgres
+    # - DB_PASS=postgres
+    # - DB_HOST=db
+    # - DB_PORT=5432
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    # env_file:
+    #   - ./django_secrets.env
+    volumes:
+      - .:/e-shop
+    depends_on:
+      - db
+volumes:
+  postgres_data:
