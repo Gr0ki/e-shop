@@ -15,6 +15,9 @@ services:
   django:
     build: .
     container_name: django
+    # Change env_file to ./.env in production:
+    env_file:
+      - ./.dev.env
     environment:
       - DEBUG=${DEBUG}
       - SECRET_KEY=${SECRET_KEY}
