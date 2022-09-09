@@ -71,7 +71,10 @@ def login_request(request):
                 messages.info(request, "Username or password is incorrect.")
         else:
             """if reCAPTCHA returns False"""
-            messages.error(request, "Invalid reCAPTCHA. Please try again.")
+            messages.error(
+                request,
+                f"{GOOGLE_RECAPTCHA_SECRET_KEY}Invalid reCAPTCHA. Please try again.",
+            )
 
     form = AuthUserForm()
     context = {"form": form, "recaptcha_site_key": GOOGLE_RECAPTCHA_SITE_KEY}
