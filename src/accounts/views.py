@@ -72,8 +72,7 @@ def login_request(request):
         else:
             """if reCAPTCHA returns False"""
             messages.error(
-                request,
-                f"{GOOGLE_RECAPTCHA_SECRET_KEY}Invalid reCAPTCHA. Please try again.",
+                request, "Invalid reCAPTCHA. Please try again."
             )
 
     form = AuthUserForm()
