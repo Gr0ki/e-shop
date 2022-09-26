@@ -13,12 +13,6 @@ from ....products.serializers import ProductSerializer
 
 
 class ProductList(ListAPIView):
-    """
-    Returns a list of all products.
-    Enabled filter result by "id"(?id=1) and "is_in_stock"(?is_in_stock=true) fields.
-    Enabled search by name and description for a partial match (?search=example).
-    """
-
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = (DjangoFilterBackend, SearchFilter)
@@ -27,19 +21,10 @@ class ProductList(ListAPIView):
 
 
 class ProductCreate(CreateAPIView):
-    """
-    Endpoint for staff users only.
-    Creates new Product.
-    """
-
     serializer_class = ProductSerializer
     permission_classes = [IsAdminUser]
 
     def create(self, request, *args, **kwargs):
-        """
-        Validates "price" field for being float and greater than 0.0.
-        Returns inherited create method from a parent class.
-        """
         price = request.data.get("price")
         if not isinstance(price, float):
             try:
@@ -55,29 +40,16 @@ class ProductCreate(CreateAPIView):
 
 
 class ProductRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
-    """
-    Everyone has access to the GET method, while others are for staff users only.
-    Retrieves, updates and deletes a specific product.
-    """
-
     queryset = Product.objects.all()
     lookup_field = "id"
     serializer_class = ProductSerializer
     permission_classes = [IsAdminUser]
 
     def check_permissions(self, request):
-        """
-        Check if the request should be permitted.
-        Raises an appropriate exception if the request is not permitted.
-        """
         if request.method != "GET":
             super().check_permissions(request)
 
     def update(self, request, *args, **kwargs):
-        """
-        Validates "price" field for being float and greater than 0.0.
-        Returns inherited update method from a parent class.
-        """
         price = request.data.get("price")
         if not isinstance(price, float):
             raise ValidationError(

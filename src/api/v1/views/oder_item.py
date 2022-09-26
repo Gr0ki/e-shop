@@ -12,11 +12,6 @@ from ....orders.serializers import OrderItemSerializer
 
 
 class OrderItemList(ListAPIView):
-    """
-    Endpoint for staff users only.
-    Returns a list of all orders items.
-    """
-
     serializer_class = OrderItemSerializer
     queryset = OrderItem.objects.all()
     permission_classes = [IsAuthenticated]
@@ -32,11 +27,6 @@ class OrderItemList(ListAPIView):
 
 
 class OrderItemCreate(CreateAPIView):
-    """
-    Endpoint for staff users only.
-    Creates new status (for orders model).
-    """
-
     serializer_class = OrderItemSerializer
     permission_classes = [IsAuthenticated]
 
@@ -52,11 +42,6 @@ class OrderItemCreate(CreateAPIView):
 
 
 class OrderItemRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
-    """
-    Endpoint for staff users only.
-    Retrieves, updates and deletes a specific status (for orders model).
-    """
-
     queryset = OrderItem.objects.all()
     lookup_field = "id"
     serializer_class = OrderItemSerializer

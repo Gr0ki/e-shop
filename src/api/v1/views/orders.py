@@ -13,11 +13,6 @@ from ....orders.serializers import OrderSerializer
 
 
 class OrderList(ListAPIView):
-    """
-    Registered user can get all orders related to it.
-    Staff users can get all orders in the database and filter result by customer.
-    """
-
     serializer_class = OrderSerializer
     queryset = Order.objects.all()
     permission_classes = [IsAuthenticated]
@@ -38,11 +33,6 @@ class OrderList(ListAPIView):
 
 
 class OrderCreate(CreateAPIView):
-    """
-    Endpoint for staff users only.
-    Creates new order.
-    """
-
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
 
@@ -56,11 +46,6 @@ class OrderCreate(CreateAPIView):
 
 
 class OrderRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
-    """
-    Endpoint for staff users only.
-    Retrieves, updates and deletes a specific order.
-    """
-
     queryset = Order.objects.all()
     lookup_field = "id"
     serializer_class = OrderSerializer
