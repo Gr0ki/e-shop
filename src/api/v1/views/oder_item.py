@@ -7,7 +7,7 @@ from rest_framework.generics import (
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 
-from ....orders.models import OrderItem
+from ....orders.models import OrderItem, Order
 from ....orders.serializers import OrderItemSerializer
 
 
@@ -42,9 +42,11 @@ class OrderItemCreate(CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         user = self.request.user
-        if user.is_staff is False and request.data[
-            "order"
-        ] not in OrderItem.objects.filter(order__customer=user.id):
+        if (
+            user.is_staff is False
+            and int(request.data["order"])
+            != Order.objects.all().filter(customer_id__id=user.id).first().id
+        ):
             raise PermissionDenied()
         return super().create(request, *args, **kwargs)
 
