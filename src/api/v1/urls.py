@@ -36,11 +36,11 @@ urlpatterns = [
     path("orders", OrderList.as_view(), name="order-list"),
     path("orders/new", OrderCreate.as_view(), name="add-new-order"),
     path("orders/<int:id>", OrderRetrieveUpdateDestroy.as_view(), name="order-rud"),
-    # Order Items:
-    path("order-item", OrderItemList.as_view(), name="order-item-list"),
-    path("order-item/new", OrderItemCreate.as_view(), name="add-new-order-item"),
+    # Orders Items:
+    path("orders-items", OrderItemList.as_view(), name="order-item-list"),
+    path("orders-items/new", OrderItemCreate.as_view(), name="add-new-order-item"),
     path(
-        "order-item/<int:id>",
+        "orders-items/<int:id>",
         OrderItemRetrieveUpdateDestroy.as_view(),
         name="order-item-rud",
     ),
