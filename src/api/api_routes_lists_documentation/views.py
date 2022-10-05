@@ -19,9 +19,9 @@ v1_data = {
     "Add new order": "http://127.0.0.1:8000/api/v1/orders/new",  # customer(limited), staff
     "Order detailed": "http://127.0.0.1:8000/api/v1/orders/1",  # customer(limited), staff
     # __________
-    "OrderItem list": "http://127.0.0.1:8000/api/v1/order-item",  # customer(limited), staff
-    "Add new OrderItem": "http://127.0.0.1:8000/api/v1/order-item/new",  # customer(limited), staff
-    "OrderItem detailed": "http://127.0.0.1:8000/api/v1/order-item/1",  # customer(limited), staff
+    "OrderItem list": "http://127.0.0.1:8000/api/v1/orders-items",  # customer(limited), staff
+    "Add new OrderItem": "http://127.0.0.1:8000/api/v1/orders-items/new",  # customer(limited), staff
+    "OrderItem detailed": "http://127.0.0.1:8000/api/v1/orders-items/1",  # customer(limited), staff
 }
 
 versions_data = {
