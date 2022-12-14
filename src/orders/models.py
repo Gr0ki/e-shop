@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.db import models
 
 from ..products.models import Product
@@ -12,7 +12,7 @@ class Status(models.Model):
 
 
 class Order(models.Model):
-    customer = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    customer = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
     status = models.ForeignKey(
         Status, default=None, null=True, on_delete=models.PROTECT
     )  # TODO: Update default status

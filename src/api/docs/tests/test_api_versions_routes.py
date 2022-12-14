@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -16,9 +16,9 @@ class APIVersionsRoutesListTestCase(APITestCase):
         cls.url = reverse("api-versions-routes")
         cls.password = "teststaffpassword"
         cls.username = "teststaff"
-        cls.user = User.objects.all().filter(username=cls.username).first()
+        cls.user = get_user_model().objects.all().filter(username=cls.username).first()
         if cls.user is None:
-            cls.user = User.objects.create_user(
+            cls.user = get_user_model().objects.create_user(
                 cls.username, email="teststaff@test.com", password=cls.password
             )
             cls.user.is_staff = True
