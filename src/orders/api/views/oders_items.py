@@ -1,4 +1,3 @@
-# from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
@@ -15,13 +14,10 @@ class OrderItemList(ListAPIView):
     serializer_class = OrderItemSerializer
     queryset = OrderItem.objects.all()
     permission_classes = [IsAuthenticated]
-    # filter_backends = [DjangoFilterBackend]
-    # filterset_fields = ("order",)
 
     def get_queryset(self):
         user = self.request.user
         if user.is_staff is False:
-            # TODO: return 403 error for access attempt for different user's order
             self.queryset = self.queryset.filter(order__customer=user.id)
         return super().get_queryset()
 
