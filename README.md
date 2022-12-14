@@ -8,11 +8,11 @@ To build and run the project you need to install `docker` and `docker-compose`.
 ## Build the project
 
 ```
-docker-compose build
+docker-compose --env-file .dev.env build
 ```
 
 ## Start the project
 ```
-docker-compose up
+docker-compose --env-file .dev.env up
 ```
 If you got an error after this try one more time.
