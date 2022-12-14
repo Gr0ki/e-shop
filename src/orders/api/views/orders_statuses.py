@@ -5,8 +5,8 @@ from rest_framework.generics import (
 )
 from rest_framework.permissions import IsAdminUser
 
-from ....orders.models import Status
-from ....orders.serializers import StatusSerializer
+from ...models import Status
+from ...serializers import StatusSerializer
 
 
 class StatusList(ListAPIView):

@@ -3,7 +3,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from ..views import v1_data
+from ..views import versions_data
 
 
 class APIVersionsRoutesListTestCase(APITestCase):
@@ -46,8 +46,8 @@ class APIVersionsRoutesListTestCase(APITestCase):
         )
         # Get the response and test its data
         response = self.client.get(APIVersionsRoutesListTestCase.url)
-        self.assertEqual(len(response.data.keys()), len(v1_data.keys()))
-        for key, value in v1_data.items():
+        self.assertEqual(len(response.data.keys()), len(versions_data.keys()))
+        for key, value in versions_data.items():
             self.assertEqual(response.data[key], value)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # Log out

@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
+
 v1_data = {
     "Product Categories list": "http://127.0.0.1:8000/api/v1/categories",  # guest, customer
     "Add new product category": "http://127.0.0.1:8000/api/v1/categories/new",  # staff
@@ -23,18 +24,6 @@ v1_data = {
     "Add new OrderItem": "http://127.0.0.1:8000/api/v1/orders-items/new",  # customer(limited), staff
     "OrderItem detailed": "http://127.0.0.1:8000/api/v1/orders-items/1",  # customer(limited), staff
 }
-
-versions_data = {
-    "account-page": "http://127.0.0.1:8000/account/",
-    "v1": "http://127.0.0.1:8000/api/v1/",
-}
-
-
-class APIVersionsRoutesList(APIView):
-    permission_classes = (IsAdminUser,)
-
-    def get(self, request):
-        return Response(versions_data, 200)
 
 
 class APIV1RoutesList(APIView):

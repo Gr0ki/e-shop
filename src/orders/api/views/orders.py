@@ -8,8 +8,8 @@ from rest_framework.exceptions import PermissionDenied
 from django_filters.rest_framework import DjangoFilterBackend
 
 
-from ....orders.models import Order
-from ....orders.serializers import OrderSerializer
+from ...models import Order
+from ...serializers import OrderSerializer
 
 
 class OrderList(ListAPIView):

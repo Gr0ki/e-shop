@@ -8,8 +8,8 @@ from rest_framework.generics import (
 )
 from rest_framework.permissions import IsAdminUser
 
-from ....products.models import Product
-from ....products.serializers import ProductSerializer
+from ...models import Product
+from ...serializers import ProductSerializer
 
 
 class ProductList(ListAPIView):

@@ -3,7 +3,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from ..views import versions_data
+from ..v1.views import v1_data
 
 
 class APIV1RoutesListTestCase(APITestCase):
@@ -13,7 +13,7 @@ class APIV1RoutesListTestCase(APITestCase):
         Specifying url, user password, and creating the user with staff permissions.
         Applying instructions from the rewritten 'setUpClass' classmethod.
         """
-        cls.url = reverse("api-v1-routes")
+        cls.url = reverse("docs:api-v1-routes")
         cls.password = "teststaffpassword"
         cls.username = "teststaff"
         cls.user = User.objects.all().filter(username=cls.username).first()
@@ -46,8 +46,8 @@ class APIV1RoutesListTestCase(APITestCase):
         )
         # Get the response and test its data
         response = self.client.get(APIV1RoutesListTestCase.url)
-        self.assertEqual(len(response.data.keys()), len(versions_data.keys()))
-        for key, value in versions_data.items():
+        self.assertEqual(len(response.data.keys()), len(v1_data.keys()))
+        for key, value in v1_data.items():
             self.assertEqual(response.data[key], value)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # Log out

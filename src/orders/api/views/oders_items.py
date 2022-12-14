@@ -7,8 +7,8 @@ from rest_framework.generics import (
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 
-from ....orders.models import OrderItem, Order
-from ....orders.serializers import OrderItemSerializer
+from ...models import OrderItem, Order
+from ...serializers import OrderItemSerializer
 
 
 class OrderItemList(ListAPIView):

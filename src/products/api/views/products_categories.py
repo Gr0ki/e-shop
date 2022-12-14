@@ -6,8 +6,8 @@ from rest_framework.generics import (
 )
 from rest_framework.permissions import IsAdminUser
 
-from ....products.models import Category
-from ....products.serializers import CategorySerializer
+from ...models import Category
+from ...serializers import CategorySerializer
 
 
 class CategoryList(ListAPIView):
