@@ -15,4 +15,3 @@ docker-compose --env-file .dev.env build
 ```
 docker-compose --env-file .dev.env up
 ```
-If you got an error after this try one more time.

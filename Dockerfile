@@ -1,35 +1,30 @@
-# For more information, please refer to https://aka.ms/vscode-docker-python
-# FROM python:3.10-slim-bullseye
-FROM python:latest 
-# 
-# EXPOSE 8000
+FROM python:3.11.1-alpine3.17
 
 # Keeps Python from generating .pyc files in the container
-ENV PYTHONDONTWRITEBYTECODE=1
-
+ENV PYTHONDONTWRITEBYTECODE 1
 # Turns off buffering for easier container logging
-ENV PYTHONUNBUFFERED=1
+ENV PYTHONUNBUFFERED 1
 
-RUN mkdir -p /home/app
+COPY ./requirements.txt /tmp/requirements.txt
+RUN mkdir -p /app/backend
+COPY ./backend /app/backend
+WORKDIR /app/backend
+EXPOSE 8000
 
-# Create user with group app
-RUN groupadd app
-RUN useradd -m -g app app -p PASSWORD
-RUN usermod -aG app app
 
-ENV HOME=/home/app
-ENV APP_HOME=/home/app/web
+RUN python -m venv /venv && \
+    /venv/bin/pip install --upgrade pip && \
+    apk add --update --no-cache postgresql-client && \
+    apk add --update --no-cache --virtual .tmp-build-deps \
+        build-base postgresql-dev musl-dev && \
+    /venv/bin/pip install -r /tmp/requirements.txt && \
+    rm -rf /tmp && \
+    apk del .tmp-build-deps && \
+    adduser \
+    --disabled-password \
+    --no-create-home \
+    backend-user
 
-# Create "web" directory inside "app" and make it working dir
-RUN mkdir $APP_HOME
-WORKDIR $APP_HOME
+ENV PATH="/venv/bin:$PATH"
 
-# Install requirements
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-
-COPY . $APP_HOME
-
-# Grant permission for current folder to the user
-RUN chown -R app:app $APP_HOME
-USER app
+USER backend-user
