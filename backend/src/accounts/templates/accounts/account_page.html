@@ -14,7 +14,7 @@
     <div class="d-grid mx-auto">
         {% if user.is_staff %}
         <a href="/admin/auth/user/" class="btn btn btn-primary mb-2">Admin Panel</a>
-        <a href="/api/" class="btn btn btn-primary mb-2">API</a>
+        <a href="/api/docs/" class="btn btn btn-primary mb-2">API</a>
         {% endif %}
         <a href="{% url 'change_password' %}" class="btn btn-outline-primary">Change
             Password</a>
