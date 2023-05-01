@@ -6,8 +6,8 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 COPY ./requirements.txt /tmp/requirements.txt
-RUN mkdir -p /app/backend
-COPY ./backend /app/backend
+RUN mkdir /app
+COPY ./backend /app
 WORKDIR /app/backend
 EXPOSE 8000
 
