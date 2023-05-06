@@ -7,9 +7,13 @@ ENV PYTHONUNBUFFERED 1
 
 COPY ./dockerfiles/django/requirements/requirements.txt /tmp/requirements.txt
 COPY ./dockerfiles/django/requirements/dev.requirements.txt /tmp/dev.requirements.txt
+
 RUN mkdir /app
 COPY ./backend /app
+COPY ./dockerfiles/django/requirements/pytest.ini /app/pytest.ini
 WORKDIR /app/backend
+
+
 EXPOSE 8000
 
 ARG DEV=${DEV}
