@@ -14,7 +14,10 @@ services:
       - postgres_data:/var/lib/postgresql/data
   django:
     build:
-      context: .
+      context: ./
+      dockerfile: ./dockerfiles/django/Dockerfile
+      args:
+        - DEV=${DEV}
     container_name: django
     # Change env_file to ./.env in production:
     env_file:
