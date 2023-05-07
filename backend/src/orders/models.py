@@ -19,7 +19,7 @@ class Order(models.Model):
     date_time_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Customer name: {self.customer}. Status: {self.status}."
+        return f"Customer name: {self.customer.username}. Status: {self.status.name}."
 
 
 class OrderItem(models.Model):
@@ -29,4 +29,4 @@ class OrderItem(models.Model):
     date_time_added = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Order: {self.order}\nProduct: {self.product} Amount: {self.quantity}"
+        return f"Order-id: {self.order.id}\nProduct: {self.product.name} Amount: {self.quantity}"
