@@ -5,7 +5,7 @@ from ..products.models import Product
 
 
 class Status(models.Model):
-    name = models.CharField(max_length=30, unique=True)
+    name = models.CharField(max_length=200, unique=True)
 
     def __str__(self):
         return f"{self.name}"
