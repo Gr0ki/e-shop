@@ -17,7 +17,15 @@ class StatusFactory(DjangoModelFactory):
     class Meta:
         model = Status
 
-    name = Faker("word")
+    @sequence
+    def name(n):
+        while True:
+            name = Faker("word")
+            try:
+                _ = Status.objects.get(name=name)
+                continue
+            except Status.DoesNotExist:
+                return name
 
 
 class OrderFactory(DjangoModelFactory):
@@ -33,14 +41,14 @@ class OrderFactory(DjangoModelFactory):
     )
 
     @sequence
-    def customer(_):
+    def customer(n):
         try:
             return choice([i for i in get_user_model().objects.all()])
         except IndexError:
             return UserFactory.create()
 
     @sequence
-    def status(_):
+    def status(n):
         try:
             return choice([i for i in Status.objects.all()])
         except IndexError:
@@ -61,14 +69,14 @@ class OrderItemFactory(DjangoModelFactory):
     )
 
     @sequence
-    def order(_):
+    def order(_n):
         try:
             return choice([i for i in Order.objects.all()])
         except IndexError:
             return OrderFactory.create()
 
     @sequence
-    def product(_):
+    def product(n):
         try:
             return choice([i for i in Product.objects.all()])
         except IndexError:

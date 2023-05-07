@@ -16,7 +16,7 @@ class UserFactory(DjangoModelFactory):
     password = PostGenerationMethodCall("set_password", "password")
 
     @sequence
-    def username(_):
+    def username(n):
         try:
             max_id = get_user_model().objects.latest("id").id
             return f"user-{max_id + 1}"
