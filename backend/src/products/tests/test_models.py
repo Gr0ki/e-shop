@@ -4,11 +4,7 @@ import pytest
 from django.db import IntegrityError
 
 from ...core.tests.shared.conftest import new_product_category, new_product
-
-
-CATEGORY_NAME = "test_category"
-PRODUCT_NAME = "test_product"
-is_in_stock = True
+from .shared import CATEGORY_NAME, PRODUCT_NAME, IS_IN_STOCK
 
 
 @pytest.mark.django_db
@@ -36,15 +32,15 @@ def test_order_model(new_product, new_product_category):
     """Test successful creation of the Product model."""
 
     category = new_product_category(name=CATEGORY_NAME)
-    product = new_product(name=PRODUCT_NAME, category=category, is_in_stock=is_in_stock)
+    product = new_product(name=PRODUCT_NAME, category=category, is_in_stock=IS_IN_STOCK)
     assert isinstance(product.name, str)
     assert isinstance(product.price, float)
     assert isinstance(product.description, str)
     assert isinstance(product.is_in_stock, bool)
     assert product.name == PRODUCT_NAME
     assert product.category == category
-    assert product.is_in_stock == is_in_stock
+    assert product.is_in_stock == IS_IN_STOCK
     assert (
         str(product)
-        == f"Product name: {PRODUCT_NAME}. Price: {product.price}. Is in stock: {is_in_stock}."
+        == f"Product name: {PRODUCT_NAME}. Price: {product.price}. Is in stock: {IS_IN_STOCK}."
     )
