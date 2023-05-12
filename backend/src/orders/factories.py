@@ -1,6 +1,6 @@
 """Contains factories for order related models."""
 from factory.django import DjangoModelFactory
-from factory import Faker, sequence
+from factory import Faker, sequence, lazy_attribute
 from random import choice
 from datetime import datetime
 
@@ -40,15 +40,15 @@ class OrderFactory(DjangoModelFactory):
         date_end=datetime(2022, 1, 1),
     )
 
-    @sequence
-    def customer(n):
+    @lazy_attribute
+    def customer(self):
         try:
             return choice([i for i in get_user_model().objects.all()])
         except IndexError:
             return UserFactory.create()
 
-    @sequence
-    def status(n):
+    @lazy_attribute
+    def status(self):
         try:
             return choice([i for i in Status.objects.all()])
         except IndexError:
@@ -68,15 +68,15 @@ class OrderItemFactory(DjangoModelFactory):
         date_end=datetime(2022, 1, 1),
     )
 
-    @sequence
-    def order(_n):
+    @lazy_attribute
+    def order(self):
         try:
             return choice([i for i in Order.objects.all()])
         except IndexError:
             return OrderFactory.create()
 
-    @sequence
-    def product(n):
+    @lazy_attribute
+    def product(self):
         try:
             return choice([i for i in Product.objects.all()])
         except IndexError:

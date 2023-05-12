@@ -1,6 +1,6 @@
 """Contains factories for product related models."""
 from factory.django import DjangoModelFactory
-from factory import Faker, sequence
+from factory import Faker, sequence, lazy_attribute
 from factory.fuzzy import FuzzyFloat
 from random import choice
 
@@ -16,7 +16,8 @@ class CategoryFactory(DjangoModelFactory):
     @sequence
     def name(n):
         while True:
-            name = Faker("word")
+            fake = Faker("word")._get_faker()
+            name = fake.word()
             try:
                 _ = Category.objects.get(name=name)
                 continue
@@ -34,8 +35,8 @@ class ProductFactory(DjangoModelFactory):
     description = Faker("text")
     is_in_stock = Faker("pybool")
 
-    @sequence
-    def category(n):
+    @lazy_attribute
+    def category(self):
         try:
             return choice([i for i in Category.objects.all()])
         except IndexError:
@@ -44,7 +45,8 @@ class ProductFactory(DjangoModelFactory):
     @sequence
     def name(n):
         while True:
-            name = Faker("word")
+            fake = Faker("word")._get_faker()
+            name = fake.word()
             try:
                 _ = Product.objects.get(name=name)
                 continue
