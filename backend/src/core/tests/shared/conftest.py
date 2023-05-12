@@ -53,13 +53,13 @@ def new_order_status():
 def new_order():
     """Returns a link to a function that creates a Order instance via OrderFactory."""
 
-    def _new_order(customer=None, status=None):
+    def _new_order(customer=None, status=None, date_time_updated=None):
         """
         Creates a Order instance via OrderFactory.
         Order customer and Order's status can be specified explicitly.
         """
-        kwargs_keys = ("customer", "status")
-        kwargs_values = (customer, status)
+        kwargs_keys = ("customer", "status", "date_time_updated")
+        kwargs_values = (customer, status, date_time_updated)
         kwargs = {
             key: value
             for key, value in zip(kwargs_keys, kwargs_values)
@@ -74,13 +74,13 @@ def new_order():
 def new_order_item():
     """Returns a link to a function that creates a OrderItem instance via OrderItemFactory."""
 
-    def _new_order_item(order=None, product=None):
+    def _new_order_item(order=None, product=None, quantity=None, date_time_added=None):
         """
         Creates a OrderItem instance via OrderItemFactory.
         OrderItem's Order and OrderItems's Product can be specified explicitly.
         """
-        kwargs_keys = ("order", "product")
-        kwargs_values = (order, product)
+        kwargs_keys = ("order", "product", "quantity", "date_time_added")
+        kwargs_values = (order, product, quantity, date_time_added)
         kwargs = {
             key: value
             for key, value in zip(kwargs_keys, kwargs_values)
@@ -95,7 +95,7 @@ def new_order_item():
 def new_product_category():
     """Returns a link to a function that creates a Category instance via CategoryFactory."""
 
-    def _new_product_category(name):
+    def _new_product_category(name=None):
         """
         Creates a Category instance via CategoryFactory.
         Category name can be specified explicitly.
@@ -116,13 +116,15 @@ def new_product_category():
 def new_product():
     """Returns a link to a function that creates a Product instance via ProductFactory."""
 
-    def _new_product(name=None, category=None, is_in_stock=None):
+    def _new_product(
+        name=None, price=None, category=None, description=None, is_in_stock=None
+    ):
         """
         Creates a Product instance via ProductFactory.
         Product name, Category, and is_in_stock fields can be specified explicitly.
         """
-        kwargs_keys = ("name", "category", "is_in_stock")
-        kwargs_values = (name, category, is_in_stock)
+        kwargs_keys = ("name", "price", "category", "description", "is_in_stock")
+        kwargs_values = (name, price, category, description, is_in_stock)
         kwargs = {
             key: value
             for key, value in zip(kwargs_keys, kwargs_values)
