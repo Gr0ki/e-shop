@@ -16,8 +16,7 @@ class CategoryFactory(DjangoModelFactory):
     @sequence
     def name(n):
         while True:
-            fake = Faker("word")._get_faker()
-            name = fake.word()
+            name = Faker("word")._get_faker().word()
             try:
                 _ = Category.objects.get(name=name)
                 continue
@@ -45,8 +44,7 @@ class ProductFactory(DjangoModelFactory):
     @sequence
     def name(n):
         while True:
-            fake = Faker("word")._get_faker()
-            name = fake.word()
+            name = Faker("word")._get_faker().word()
             try:
                 _ = Product.objects.get(name=name)
                 continue

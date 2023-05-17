@@ -20,7 +20,7 @@ class StatusFactory(DjangoModelFactory):
     @sequence
     def name(n):
         while True:
-            name = Faker("word")
+            name = Faker("word")._get_faker().word()
             try:
                 _ = Status.objects.get(name=name)
                 continue
