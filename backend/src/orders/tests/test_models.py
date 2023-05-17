@@ -11,10 +11,7 @@ from ...core.tests.shared.conftest import (
     new_user,
     new_product,
 )
-
-STATUS_NAME = "test_status"
-TEST_USERNAME = "test_user"
-PRODUCT_NAME = "test_product"
+from .shared import STATUS_NAME, TEST_USERNAME, PRODUCT_NAME
 
 
 @pytest.mark.django_db

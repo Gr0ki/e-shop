@@ -2,7 +2,6 @@
 
 import pytest
 from pytest import approx
-from random import randint
 from datetime import datetime
 
 from ...core.tests.shared.conftest import (
@@ -91,7 +90,7 @@ def test_deserialization_order_item_serializer(new_order, new_product):
     order = new_order()
     product = new_product()
     data = {
-        "quantity": randint(1, 200),
+        "quantity": fake.random_int(1, 100),
         "date_time_added": datetime.now(),
         "order": order.id,
         "product": product.id,

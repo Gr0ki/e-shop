@@ -4,6 +4,7 @@ import pytest
 
 from ...core.tests.shared.conftest import new_product_category, new_product
 from ..serializers import CategorySerializer, ProductSerializer
+from .shared import fake
 
 
 @pytest.mark.django_db
@@ -18,7 +19,7 @@ def test_serialization_category_serializer(new_product_category):
 def test_deserialization_category_serializer():
     """Tests successful deserialization with CategorySerializer."""
     data = {
-        "name": "test_category",
+        "name": fake.word(),
     }
     serializer = CategorySerializer(data=data)
     assert serializer.is_valid()
@@ -47,11 +48,11 @@ def test_deserialization_product_serializer(new_product_category):
     """Tests successful deserialization with ProductSerializer."""
     category = new_product_category()
     data = {
-        "name": "test_product",
-        "price": 10.0,
+        "name": fake.word(),
+        "price": fake.random_number(),
         "category": category.id,
-        "description": "test_description",
-        "is_in_stock": True,
+        "description": fake.text(),
+        "is_in_stock": fake.boolean(),
     }
     serializer = ProductSerializer(data=data)
     assert serializer.is_valid()
