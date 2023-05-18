@@ -1,3 +1,5 @@
+"""Contains urlpatterns for api versions."""
+
 from django.urls import include, path
 
 from .v1.products.urls import urlpatterns as products_api_urlpatterns

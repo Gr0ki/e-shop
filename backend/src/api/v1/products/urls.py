@@ -1,3 +1,5 @@
+"""Contains urlpatterns for v1 of the api endpoints related to the products app."""
+
 from django.urls import path
 
 from .views.products_categories import *
