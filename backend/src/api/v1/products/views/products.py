@@ -43,14 +43,14 @@ class ProductCreate(CreateAPIView):
         if not isinstance(price, float):
             try:
                 price = float(price)
-            except:
+            except ValueError:
                 raise ValidationError(
                     {"price": "A valid float number above 0.0 is required."}
                 )
         if price <= 0.0:
             raise ValidationError({"price": "Must be above 0.0."})
-        else:
-            return super().create(request, *args, **kwargs)
+
+        return super().create(request, *args, **kwargs)
 
 
 class ProductRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
@@ -69,7 +69,8 @@ class ProductRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
         Skips inherited implementation of 'check_permissions' for GET method requests.
         """
         if request.method != "GET":
-            super().check_permissions(request)
+            return super().check_permissions(request)
+        return None
 
     def update(self, request, *args, **kwargs):
         """
@@ -82,5 +83,5 @@ class ProductRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
             )
         if price <= 0.0:
             raise ValidationError({"price": "Must be above 0.0."})
-        else:
-            return super().update(request, *args, **kwargs)
+
+        return super().update(request, *args, **kwargs)

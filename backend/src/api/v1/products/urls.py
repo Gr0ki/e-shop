@@ -2,8 +2,12 @@
 
 from django.urls import path
 
-from .views.products_categories import *
-from .views.products import *
+from .views.products_categories import (
+    CategoryList,
+    CategoryCreate,
+    CategoryRetrieveUpdateDestroy,
+)
+from .views.products import ProductList, ProductCreate, ProductRetrieveUpdateDestroy
 
 
 urlpatterns = [

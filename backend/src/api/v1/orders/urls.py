@@ -2,9 +2,13 @@
 
 from django.urls import path
 
-from .views.orders_statuses import *
-from .views.orders import *
-from .views.oders_items import *
+from .views.orders_statuses import StatusList, StatusCreate, StatusRetrieveUpdateDestroy
+from .views.orders import OrderList, OrderCreate, OrderRetrieveUpdateDestroy
+from .views.oders_items import (
+    OrderItemList,
+    OrderItemCreate,
+    OrderItemRetrieveUpdateDestroy,
+)
 
 
 urlpatterns = [

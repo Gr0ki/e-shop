@@ -107,7 +107,6 @@ class OrderRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
         to instantiate only those Orders that belong to the current user.
         """
         user = self.request.user
-        request_method = self.request.method
 
         if user.is_authenticated is True and user.is_staff is False:
             self.queryset = self.queryset.filter(customer=user.id)

@@ -82,3 +82,4 @@ class OrderItemRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
         """
         if request.method != "GET":
             return super().check_permissions(request)
+        return None
