@@ -9,8 +9,8 @@ COPY ./dockerfiles/django/requirements/requirements.txt /tmp/requirements.txt
 COPY ./dockerfiles/django/requirements/dev.requirements.txt /tmp/dev.requirements.txt
 
 RUN mkdir /app
-COPY ./backend /app
 COPY ./dockerfiles/django/requirements/pytest.ini /app/pytest.ini
+COPY ./dockerfiles/django/requirements/.pylintrc /app/.pylintrc
 WORKDIR /app/backend
 
 

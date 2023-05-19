@@ -1,0 +1,6 @@
+[MASTER]
+load-plugins=pylint_pytest
+
+[MESSAGES CONTROL]
+
+disable=import-outside-toplevel, raise-missing-from
