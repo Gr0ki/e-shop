@@ -1,3 +1,6 @@
+"""Contains urlpatterns for products app views."""
+
+
 from django.urls import path
 
 from .views import ProductsView

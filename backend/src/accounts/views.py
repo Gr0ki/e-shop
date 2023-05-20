@@ -1,3 +1,5 @@
+"""Contains accounts app views."""
+
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -11,11 +13,14 @@ from .forms import CreateUserForm, AuthUserForm, ChangePasswordForm
 
 
 class AccountView(LoginRequiredMixin, TemplateView):
+    """View for the account page."""
+
     template_name = "accounts/account_page.html"
     login_url = "login/"
 
 
 def register_request(request):
+    """Register view."""
     form = CreateUserForm()
 
     if request.method == "POST":
@@ -46,6 +51,7 @@ def register_request(request):
 
 
 def login_request(request):
+    """Login view."""
     form = AuthUserForm()
 
     if request.method == "POST":
@@ -79,12 +85,14 @@ def login_request(request):
 
 
 def logout_request(request):
+    """Logout view."""
     logout(request)
     return redirect("orders-list-page")
 
 
 @login_required
 def change_password_request(request):
+    """Change password view."""
     if request.method == "POST":
         form = ChangePasswordForm(request.user, request.POST)
         if form.is_valid() is True:

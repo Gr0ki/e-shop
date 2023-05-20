@@ -1,5 +1,7 @@
 # pylint: disable=too-many-ancestors
 
+"""Contains forms for accounts app."""
+
 from django.contrib.auth.forms import (
     UserCreationForm,
     AuthenticationForm,
@@ -9,6 +11,8 @@ from django.contrib.auth import get_user_model
 
 
 class CreateUserForm(UserCreationForm):
+    """Form for creating the user."""
+
     class Meta:
         model = get_user_model()
         fields = [
@@ -19,8 +23,14 @@ class CreateUserForm(UserCreationForm):
 
 
 class AuthUserForm(AuthenticationForm):
+    """Authentication form."""
+
+    # pylint: disable=unnecessary-pass
     pass
 
 
 class ChangePasswordForm(PasswordChangeForm):
+    """Form for changing user's password."""
+
+    # pylint: disable=unnecessary-pass
     pass

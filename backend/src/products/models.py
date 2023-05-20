@@ -1,7 +1,11 @@
+"""Contains models for products app."""
+
 from django.db import models
 
 
 class Category(models.Model):
+    """Category model."""
+
     name = models.CharField(max_length=200, unique=True)
 
     def __str__(self):
@@ -9,6 +13,8 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    """Product model."""
+
     name = models.CharField(max_length=200, unique=True)
     price = models.FloatField()
     # image = models.ImageField()

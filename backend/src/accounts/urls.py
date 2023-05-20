@@ -1,3 +1,5 @@
+"""Contains urlpatterns for accounts app views."""
+
 from django.urls import path
 
 from .views import (

@@ -1,3 +1,5 @@
+"""Contains models for orders app."""
+
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -5,6 +7,8 @@ from ..products.models import Product
 
 
 class Status(models.Model):
+    """Status model."""
+
     name = models.CharField(max_length=200, unique=True)
 
     def __str__(self):
@@ -12,6 +16,8 @@ class Status(models.Model):
 
 
 class Order(models.Model):
+    """Order model."""
+
     # pylint: disable=no-member
     customer = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
     status = models.ForeignKey(
@@ -24,6 +30,8 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
+    """OrderItem model."""
+
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     quantity = models.IntegerField(default=1)
