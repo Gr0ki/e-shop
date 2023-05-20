@@ -1,8 +1,8 @@
 """Contains tests for order related serializers."""
 
+from datetime import datetime
 import pytest
 from pytest import approx
-from datetime import datetime
 
 from ...core.tests.shared.conftest import (
     new_order_status,

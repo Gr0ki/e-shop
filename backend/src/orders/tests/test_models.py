@@ -1,7 +1,7 @@
 """Tests fot order related models."""
 
-import pytest
 from datetime import datetime
+import pytest
 from django.db import IntegrityError
 
 from ...core.tests.shared.conftest import (
@@ -29,6 +29,7 @@ def test_status_model_unique_constrain_exception(new_order_status):
     Test that an IntegrityError is raised when creating a new Status object
     with the same name as an existing one.
     """
+    # pylint: disable=unused-variable
     status = new_order_status(name=STATUS_NAME)
     with pytest.raises(IntegrityError):
         status = new_order_status(name=STATUS_NAME)

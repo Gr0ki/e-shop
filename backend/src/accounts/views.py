@@ -7,7 +7,7 @@ from django.contrib import messages
 import requests
 
 from config.settings import GOOGLE_RECAPTCHA_SITE_KEY, GOOGLE_RECAPTCHA_SECRET_KEY
-from .forms import *
+from .forms import CreateUserForm, AuthUserForm, ChangePasswordForm
 
 
 class AccountView(LoginRequiredMixin, TemplateView):
@@ -21,24 +21,25 @@ def register_request(request):
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         if form.is_valid() is True:
-            """reCAPTCHA validation"""
+            # reCAPTCHA validation
             recaptcha_response = request.POST.get("g-recaptcha-response")
             data = {
                 "secret": GOOGLE_RECAPTCHA_SECRET_KEY,
                 "response": recaptcha_response,
             }
-            r = requests.post(
-                "https://www.google.com/recaptcha/api/siteverify", data=data
+            response = requests.post(
+                "https://www.google.com/recaptcha/api/siteverify",
+                data=data,
+                timeout=5000,
             )
-            result = r.json()
+            result = response.json()
 
             if result["success"] is True:
-                """if reCAPTCHA returns True"""
+                # if reCAPTCHA returns True
                 form.save()
                 return redirect("login")
-            else:
-                """if reCAPTCHA returns False"""
-                messages.error(request, "Invalid reCAPTCHA. Please try again.")
+            # if reCAPTCHA returns False
+            messages.error(request, "Invalid reCAPTCHA. Please try again.")
 
     context = {"form": form, "recaptcha_site_key": GOOGLE_RECAPTCHA_SITE_KEY}
     return render(request, "registration/register.html", context)
@@ -50,14 +51,16 @@ def login_request(request):
     if request.method == "POST":
         form = AuthUserForm(request, data=request.POST)
 
-        """ reCAPTCHA validation """
+        # reCAPTCHA validation
         recaptcha_response = request.POST.get("g-recaptcha-response")
         data = {"secret": GOOGLE_RECAPTCHA_SECRET_KEY, "response": recaptcha_response}
-        r = requests.post("https://www.google.com/recaptcha/api/siteverify", data=data)
-        result = r.json()
+        response = requests.post(
+            "https://www.google.com/recaptcha/api/siteverify", data=data, timeout=5000
+        )
+        result = response.json()
 
         if result["success"] is True:
-            """if reCAPTCHA returns True"""
+            # if reCAPTCHA returns True
             username = request.POST.get("username")
             password = request.POST.get("password")
             user = authenticate(request, username=username, password=password)
@@ -65,15 +68,10 @@ def login_request(request):
                 if user.is_active is True:
                     login(request, user)
                     return redirect("account")
-                else:
-                    messages.info(request, "User has been banned.")
-            else:
-                messages.info(request, "Username or password is incorrect.")
-        else:
-            """if reCAPTCHA returns False"""
-            messages.error(
-                request, "Invalid reCAPTCHA. Please try again."
-            )
+                messages.info(request, "User has been banned.")
+            messages.info(request, "Username or password is incorrect.")
+        # if reCAPTCHA returns False
+        messages.error(request, "Invalid reCAPTCHA. Please try again.")
 
     form = AuthUserForm()
     context = {"form": form, "recaptcha_site_key": GOOGLE_RECAPTCHA_SITE_KEY}
@@ -90,26 +88,27 @@ def change_password_request(request):
     if request.method == "POST":
         form = ChangePasswordForm(request.user, request.POST)
         if form.is_valid() is True:
-            """reCAPTCHA validation"""
+            # reCAPTCHA validation
             recaptcha_response = request.POST.get("g-recaptcha-response")
             data = {
                 "secret": GOOGLE_RECAPTCHA_SECRET_KEY,
                 "response": recaptcha_response,
             }
-            r = requests.post(
-                "https://www.google.com/recaptcha/api/siteverify", data=data
+            response = requests.post(
+                "https://www.google.com/recaptcha/api/siteverify",
+                data=data,
+                timeout=5000,
             )
-            result = r.json()
+            result = response.json()
 
             if result["success"] is True:
-                """if reCAPTCHA returns True"""
+                # if reCAPTCHA returns True
                 user = form.save()
                 update_session_auth_hash(request, user)
                 messages.success(request, "Your password was successfully updated!")
                 return redirect("account")
-            else:
-                """if reCAPTCHA returns False"""
-                messages.error(request, "Invalid reCAPTCHA. Please try again.")
+            # if reCAPTCHA returns False
+            messages.error(request, "Invalid reCAPTCHA. Please try again.")
     else:
         form = ChangePasswordForm(request.user)
     context = {"form": form, "recaptcha_site_key": GOOGLE_RECAPTCHA_SITE_KEY}

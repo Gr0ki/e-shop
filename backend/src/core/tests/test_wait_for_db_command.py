@@ -1,8 +1,10 @@
+# pylint: disable=unused-argument
+
 """
 Test with unittest approach custom Django management command for waiting for db.
 """
-import pytest
 from unittest.mock import patch
+import pytest
 
 from psycopg2 import OperationalError as Psycopg2OpError
 

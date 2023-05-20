@@ -12,10 +12,11 @@ class Status(models.Model):
 
 
 class Order(models.Model):
+    # pylint: disable=no-member
     customer = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
     status = models.ForeignKey(
         Status, default=None, null=True, on_delete=models.PROTECT
-    )  # TODO: Update default status
+    )
     date_time_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):

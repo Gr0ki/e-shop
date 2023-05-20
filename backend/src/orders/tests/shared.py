@@ -1,8 +1,7 @@
 """Contains shared code for orders related tests."""
 
-from faker import Faker
-
 from datetime import datetime
+from faker import Faker
 from django.utils.timezone import get_current_timezone
 
 

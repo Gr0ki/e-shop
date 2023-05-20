@@ -1,10 +1,9 @@
 """
 Test with unittest approach custom Django management command for populating db.
 """
-import pytest
 from unittest.mock import patch
-
 from io import StringIO
+import pytest
 
 from django.core.management import call_command
 from django.test import TestCase
