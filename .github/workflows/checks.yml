@@ -1,4 +1,4 @@
-name: Test & lint
+name: test & lint
 on:
   push:
     branches:
@@ -19,13 +19,21 @@ jobs:
             password: ${{ secrets.DOCKERHUB_TOKEN }}
         - name: Checkout
           uses: actions/checkout@v2
-        - name: Test
-          run: docker-compose --env-file .dev.env run --rm django sh -c "python manage.py wait_for_db && pytest"
         - name: Lint
           run: >
             docker-compose --env-file .dev.env run --rm django sh -c
-            "pylint src
+            "cd backend && pylint src
             --rcfile=/app/.pylintrc
             --load-plugins pylint_django
             --django-settings-module=config.settings
             --output-format=colorized"
+        - name: Run tests and measure code coverage
+          run: >
+            docker-compose --env-file .dev.env
+            run --rm django sh -c "python ./backend/manage.py wait_for_db &&
+            coverage run -m pytest ./backend"
+        - name: Publish coverage results via coveralls.io.
+          run: >
+            echo "COVERALLS_REPO_TOKEN=${{secrets.COVERALLS_REPO_TOKEN}}" >> .dev.env &&
+            docker-compose --env-file .dev.env
+            run --rm django sh -c "coveralls"
