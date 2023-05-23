@@ -23,7 +23,7 @@ jobs:
           run: >
             docker-compose --env-file .dev.env run --rm django sh -c
             "cd backend && pylint src
-            --rcfile=/app/.pylintrc
+            --rcfile=/home/backend-user/app/.pylintrc
             --load-plugins pylint_django
             --django-settings-module=config.settings
             --output-format=colorized"

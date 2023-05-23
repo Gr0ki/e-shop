@@ -5,21 +5,22 @@ ENV PYTHONDONTWRITEBYTECODE 1
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED 1
 
-RUN mkdir -p /app/coverage && \
-    addgroup -S backend-group && \
-    adduser -S backend-user -G backend-group
+RUN addgroup -S backend-group && \
+    adduser -S backend-user -G backend-group && \
+    mkdir -p /home/backend-user/app/coverage
 
 
 COPY ./dockerfiles/django/requirements/requirements.txt /tmp/requirements.txt
 COPY ./dockerfiles/django/requirements/dev.requirements.txt /tmp/dev.requirements.txt
 
-COPY ./dockerfiles/django/requirements/pytest.ini /app/pytest.ini
-COPY ./dockerfiles/django/requirements/.pylintrc /app/.pylintrc
+COPY ./dockerfiles/django/requirements/pytest.ini /home/backend-user/app/pytest.ini
+COPY ./dockerfiles/django/requirements/.pylintrc /home/backend-user/app/.pylintrc
+COPY ./dockerfiles/django/requirements/.coveragerc /home/backend-user/app/.coveragerc
 
-COPY ./.git /app/.git
+COPY ./.git /home/backend-user/app/.git
 
 
-WORKDIR /app
+WORKDIR /home/backend-user/app
 
 EXPOSE 8000
 
@@ -37,7 +38,7 @@ RUN python -m venv /venv && \
     fi && \
     rm -rf /tmp && \
     apk del .tmp-build-deps && \
-    chown -R backend-user:backend-group /app
+    chown -R backend-user:backend-group /home/backend-user/app
 
 ENV PATH="/venv/bin:$PATH"
 

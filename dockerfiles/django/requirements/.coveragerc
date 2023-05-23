@@ -1,0 +1,13 @@
+[run]
+source=backend
+
+omit =
+        */config/*
+        */migrations/*
+        */tests/*
+        */__init__.py
+        */manage.py
+        */apps.py
+        */urls.py
+        */admin.py
+        */forms.py
