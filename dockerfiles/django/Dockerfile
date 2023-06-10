@@ -7,7 +7,8 @@ ENV PYTHONUNBUFFERED 1
 
 RUN addgroup -S backend-group && \
     adduser -S backend-user -G backend-group && \
-    mkdir -p /home/backend-user/app/coverage
+    mkdir -p /home/backend-user/app/coverage && \
+    mkdir -p /home/backend-user/app/static
 
 
 COPY ./dockerfiles/django/requirements/requirements.txt /tmp/requirements.txt
