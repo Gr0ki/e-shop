@@ -17,3 +17,4 @@ To build and run the project you need to install `docker` and `docker-compose`.
 ```
 docker-compose --env-file .dev.env up --build
 ```
+
