@@ -16,7 +16,7 @@ class AccountView(LoginRequiredMixin, TemplateView):
     """View for the account page."""
 
     template_name = "accounts/account_page.html"
-    login_url = "login/"
+    login_url = "/account/login/"
 
 
 def register_request(request):
@@ -90,7 +90,7 @@ def logout_request(request):
     return redirect("orders-list-page")
 
 
-@login_required
+@login_required(login_url="login")
 def change_password_request(request):
     """Change password view."""
     if request.method == "POST":
